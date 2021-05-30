@@ -34,3 +34,15 @@ D:\Word\New_Blazor\Utility\obj\Debug\net5.0\Utility.dll
 D:\Word\New_Blazor\Utility\obj\Debug\net5.0\ref\Utility.dll
 D:\Word\New_Blazor\Utility\obj\Debug\net5.0\Utility.pdb
 D:\Work\New_Blazor\Utility\obj\Debug\net5.0\Utility.csproj.AssemblyReference.cache
+D:\Work\TKS_Work_Devexpress_Blazor\Utility\bin\Debug\net5.0\Utility.deps.json
+D:\Work\TKS_Work_Devexpress_Blazor\Utility\bin\Debug\net5.0\Utility.dll
+D:\Work\TKS_Work_Devexpress_Blazor\Utility\bin\Debug\net5.0\ref\Utility.dll
+D:\Work\TKS_Work_Devexpress_Blazor\Utility\bin\Debug\net5.0\Utility.pdb
+D:\Work\TKS_Work_Devexpress_Blazor\Utility\obj\Debug\net5.0\Utility.csproj.AssemblyReference.cache
+D:\Work\TKS_Work_Devexpress_Blazor\Utility\obj\Debug\net5.0\Utility.GeneratedMSBuildEditorConfig.editorconfig
+D:\Work\TKS_Work_Devexpress_Blazor\Utility\obj\Debug\net5.0\Utility.AssemblyInfoInputs.cache
+D:\Work\TKS_Work_Devexpress_Blazor\Utility\obj\Debug\net5.0\Utility.AssemblyInfo.cs
+D:\Work\TKS_Work_Devexpress_Blazor\Utility\obj\Debug\net5.0\Utility.csproj.CoreCompileInputs.cache
+D:\Work\TKS_Work_Devexpress_Blazor\Utility\obj\Debug\net5.0\Utility.dll
+D:\Work\TKS_Work_Devexpress_Blazor\Utility\obj\Debug\net5.0\ref\Utility.dll
+D:\Work\TKS_Work_Devexpress_Blazor\Utility\obj\Debug\net5.0\Utility.pdb

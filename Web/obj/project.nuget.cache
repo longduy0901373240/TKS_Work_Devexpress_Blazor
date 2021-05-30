@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "V+lgYKjLUr956dQrBJ02OGaDSu2eivFP9zR2nkx2ZoBOwcqMqIDWid+yh1TS3HBQSXwxsdiRLbHGvPZT/tyN1Q==",
+  "dgSpecHash": "G7ym9NMsgXEbnlxesjANU+HNZBh8/zG58b0SovNndycSodry3yI91cRCJjnzNMYWffYUf/rOc6WHV/Cj7hMDaQ==",
   "success": true,
-  "projectFilePath": "D:\\Work\\New_Blazor\\Web\\Web.csproj",
+  "projectFilePath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Web\\Web.csproj",
   "expectedPackageFiles": [
     "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages\\devexpress.blazor\\20.2.4\\devexpress.blazor.20.2.4.nupkg.sha512",
     "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages\\devexpress.charts\\20.2.4\\devexpress.charts.20.2.4.nupkg.sha512",

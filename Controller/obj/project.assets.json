@@ -4964,11 +4964,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Work\\New_Blazor\\Controller\\Controller.csproj",
+      "projectUniqueName": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Controller\\Controller.csproj",
       "projectName": "Controller",
-      "projectPath": "D:\\Work\\New_Blazor\\Controller\\Controller.csproj",
+      "projectPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Controller\\Controller.csproj",
       "packagesPath": "C:\\Users\\longd\\.nuget\\packages\\",
-      "outputPath": "D:\\Work\\New_Blazor\\Controller\\obj\\",
+      "outputPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Controller\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages"
@@ -4990,14 +4990,14 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "D:\\Work\\New_Blazor\\DataLayer\\DataLayer.csproj": {
-              "projectPath": "D:\\Work\\New_Blazor\\DataLayer\\DataLayer.csproj"
+            "D:\\Work\\TKS_Work_Devexpress_Blazor\\DataLayer\\DataLayer.csproj": {
+              "projectPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\DataLayer\\DataLayer.csproj"
             },
-            "D:\\Work\\New_Blazor\\Entity\\Entity.csproj": {
-              "projectPath": "D:\\Work\\New_Blazor\\Entity\\Entity.csproj"
+            "D:\\Work\\TKS_Work_Devexpress_Blazor\\Entity\\Entity.csproj": {
+              "projectPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Entity\\Entity.csproj"
             },
-            "D:\\Work\\New_Blazor\\Utility\\Utility.csproj": {
-              "projectPath": "D:\\Work\\New_Blazor\\Utility\\Utility.csproj"
+            "D:\\Work\\TKS_Work_Devexpress_Blazor\\Utility\\Utility.csproj": {
+              "projectPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Utility\\Utility.csproj"
             }
           }
         }

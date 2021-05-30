@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gx6ORuSrfTuo8cdz2N1C3Np8xSmG8ARFuV/LHZRemPhPKj5+ev1kyXaGspB3P0Zg79iMW1z3r7Hmt04AaqtzGQ==",
+  "dgSpecHash": "ZnW79Q3dIG+WJpuUtavMosTkwtXE5wVcKeMXQUQQOI0mfHQy56oto+mwroZiQB3q8RYKGhWJzXIMzQy1xAMlbw==",
   "success": true,
-  "projectFilePath": "D:\\Work\\New_Blazor\\Web_Blazor\\Web_Blazor.csproj",
+  "projectFilePath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Web_Blazor\\Web_Blazor.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\longd\\.nuget\\packages\\epplus\\5.6.4\\epplus.5.6.4.nupkg.sha512",
     "C:\\Users\\longd\\.nuget\\packages\\microsoft.extensions.configuration\\5.0.0\\microsoft.extensions.configuration.5.0.0.nupkg.sha512",
