@@ -346,7 +346,7 @@ namespace Utility
             return v_strCell_Value;
         }
         ///<summary>
-        ///ser cell value
+        ///set cell value
         ///</summary>
         ///<param name="p_fileInfo"></param>
         ///<param name="p_strCell"></param>
@@ -356,7 +356,7 @@ namespace Utility
             Set_Cell_Value<T>(1, p_strCell, p_objValue_Cell, p_fileInfo);
         }
         ///<summary>
-        ///ser cell value
+        ///set cell value
         ///</summary>
         ///<param name="p_iSheet_Index"></param>
         ///<param name="p_fileInfo"></param>
