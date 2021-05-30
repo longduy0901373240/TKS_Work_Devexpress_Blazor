@@ -1,0 +1,83 @@
+﻿@page "/dx/trip"
+
+@using Controller.DX
+@using Entity.DX
+
+@inject CDX_Trip_Controller _db_Trip
+@inject CDX_DO_Controller _db_DO
+@inject CDX_Tai_Xe_Controller _db_Tai_Xe
+@inject CDX_Xe_Controller _db_Xe
+@inject CDX_Giao_Hang_Controller _db_Giao_Hang
+@inject CDX_Nhan_Hang_Controller _db_Nhan_Hang
+@inject IJSRuntime IJS
+
+<h3>Trip page</h3>
+<h4>Thông tin trip</h4>
+@if (p_arrTrip == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <DxDataGrid Data="p_arrTrip" @ref="_Grid"
+                EditMode="DataGridEditMode.PopupEditForm"
+                RowInsertStart="@(() => OnRowStarting(null))"
+                RowEditStart="@((item) => OnRowStarting(item))">
+        <Columns>
+            <DxDataGridCommandColumn Width="150px" />
+            <DxDataGridColumn Caption="DO ID" Field="DO_ID" />
+            <DxDataGridComboBoxColumn Caption="Tài Xế" Field="Tai_Xe_ID" Data="p_arrTai_Xe"
+                                      ValueFieldName="Auto_ID" TextFieldName="Ten_Tai_Xe" />
+            <DxDataGridComboBoxColumn Caption="Xe" Field="Xe_ID" Data="p_arrXe"
+                                      ValueFieldName="Auto_ID" TextFieldName="Ten_Xe" />
+            <DxDataGridComboBoxColumn Caption="Giao hàng" Field="Giao_Hang_ID" Data="p_arrGiao_Hang"
+                                      ValueFieldName="Auto_ID" TextFieldName="So_Phieu_Giao" />
+            <DxDataGridComboBoxColumn Caption="Nhận hàng" Field="Nhan_Hang_ID" Data="p_arrNhan_Hang"
+                                      ValueFieldName="Auto_ID" TextFieldName="So_Phieu_Nhan" />
+        </Columns>
+        <EditFormTemplate>
+            <EditForm Model="EditContext" Context="EditFormContext" OnValidSubmit="HandleValiSubmit">
+                <DxFormLayout>
+                    <DxFormLayoutItem Caption="DO ID: " ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxComboBox @bind-Value="EditContext.DO_ID" Data="p_arrDO"
+                                        ValueFieldName="Auto_ID" FilteringMode="DataGridFilteringMode.Contains"
+                                        EditFormat="{0} - {1} - {2}">
+                                <DxListEditorColumn FieldName="Auto_ID" Caption="ID" />
+                                <DxListEditorColumn FieldName="So_Phieu_Giao" Caption="Số phiếu giao" />
+                                <DxListEditorColumn FieldName="So_Phieu_Nhan" Caption="Số phiếu nhận" />
+                            </DxComboBox>
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Tài Xế: " ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxComboBox @bind-Value="EditContext.Tai_Xe_ID" Data="p_arrTai_Xe"
+                                        ValueFieldName="Auto_ID" TextFieldName="Ten_Tai_Xe" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Xe: " ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxComboBox @bind-Value="EditContext.Xe_ID" Data="p_arrXe"
+                                        ValueFieldName="Auto_ID" TextFieldName="Ten_Xe" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <div class="text-danger">
+                                <p>@Error</p>
+                            </div>
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <div class="text-right">
+                                <DxButton RenderStyle="ButtonRenderStyle.Link" SubmitFormOnClick="true" Text="Update" />
+                                <DxButton RenderStyle="ButtonRenderStyle.Link" Click="OnCancelButtonClick" Text="Cancel" />
+                            </div>
+                        </Template>
+                    </DxFormLayoutItem>
+                </DxFormLayout>
+            </EditForm>
+        </EditFormTemplate>
+    </DxDataGrid>
+}

@@ -1,0 +1,73 @@
+﻿@page "/dx/giao_hang"
+
+@using Controller.DX
+
+@inject CDX_Giao_Hang_Controller _db
+@inject IJSRuntime IJS
+
+<h3>Giao hàng page</h3>
+<h4>Thông tin giao hàng</h4>
+
+@if (p_arrData == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <DxDataGrid Data="p_arrData" @ref="@_Grid"
+                EditMode="DataGridEditMode.PopupEditForm"
+                RowRemoving="@OnRowDeleting"
+                RowInsertStart="@(() => OnRowStarting(null))"
+                RowEditStart="@((item) => OnRowStarting(item))">
+        <Columns>
+            <DxDataGridCommandColumn Width="150px" />
+            <DxDataGridColumn Caption="ID" Field="Auto_ID" />
+            <DxDataGridColumn Caption="Số phiếu giao" Field="So_Phieu_Giao" />
+            <DxDataGridColumn Caption="Địa chỉ" Field="Dia_Chi" />
+            <DxDataGridColumn Caption="Lat" Field="Lat" />
+            <DxDataGridColumn Caption="Long" Field="Long" />
+            <DxDataGridColumn Caption="Last updated by" Field="Last_Updated_By" />
+        </Columns>
+        <EditFormTemplate>
+            <EditForm Model="EditContext" Context="EditFormContext" OnValidSubmit="@HandleValiSubmit">
+                <DxFormLayout>
+                    <DxFormLayoutItem Caption="Số phiếu giao: " ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxTextBox @bind-Text="EditContext.So_Phieu_Giao" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Địa chỉ: " ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxTextBox @bind-Text="EditContext.Dia_Chi" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Lat: " ColSpanMd="6" Context="FormLayoutContext">
+                        <Template>
+                            <DxTextBox @bind-Text="EditContext.Lat" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Long: " ColSpanMd="6" Context="FormLayoutContext">
+                        <Template>
+                            <DxTextBox @bind-Text="EditContext.Long" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <div class="text-danger">
+                                <p>@Error</p>
+                            </div>
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <div class="text-right">
+                                <DxButton RenderStyle="ButtonRenderStyle.Link" SubmitFormOnClick="true" Text="Update" />
+                                <DxButton RenderStyle="ButtonRenderStyle.Link" Click="OnCancelButtonClick" Text="Cancel" />
+                            </div>
+                        </Template>
+                    </DxFormLayoutItem>
+                </DxFormLayout>
+            </EditForm>
+        </EditFormTemplate>
+    </DxDataGrid>
+}

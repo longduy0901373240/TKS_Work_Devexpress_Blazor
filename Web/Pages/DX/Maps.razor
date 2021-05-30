@@ -1,0 +1,33 @@
+﻿@page "/dx/maps"
+
+@using Controller.DX
+@using Entity.DX
+
+@inject CDX_Trip_Controller _db_Trip
+@inject CDX_Giao_Hang_Controller _db_Giao_Hang
+@inject CDX_Nhan_Hang_Controller _db_Nhan_Hang
+
+@inject IJSRuntime IJS
+
+<h3>My Google Maps Demo</h3>
+<div class="row">
+    <div class="col-md-12">
+        <DxFormLayout>
+            <DxFormLayoutGroup Caption="Chọn Trip">
+                <DxFormLayoutItem Caption="Trip: " ColSpanMd="12">
+                    <Template>
+                        <DxComboBox Data="p_arrTrip" Value="EditContext"
+                                    NullText="Select Trip..." ValueChanged="@((CDX_Trip item) => SelectedTripChanged(item))"
+                                    FilteringMode="DataGridFilteringMode.Contains"
+                                    EditFormat="{0} - {1} - {2}">
+                            <DxListEditorColumn FieldName="Auto_ID" Caption="ID" />
+                            <DxListEditorColumn FieldName="So_Phieu_Giao" Caption="Số phiếu giao" />
+                            <DxListEditorColumn FieldName="So_Phieu_Nhan" Caption="Số phiếu nhận" />
+                        </DxComboBox>
+                    </Template>
+                </DxFormLayoutItem>
+            </DxFormLayoutGroup>
+        </DxFormLayout>
+    </div>
+</div>
+<div id="map"></div>

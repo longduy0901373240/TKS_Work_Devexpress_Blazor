@@ -1,0 +1,166 @@
+﻿@page "/dx/do_management"
+
+@using Controller.DX
+@using Controller.Danh_Muc
+
+@inject CDX_DO_Controller _db_DO
+@inject CDX_DO_Chi_Tiet_Controller _db_DO_Chi_Tiet
+@inject CDX_Giao_Hang_Controller _db_Giao_Hang
+@inject CDX_Nhan_Hang_Controller _db_Nhan_Hang
+@inject CDM_San_Pham_Controller _db_San_Pham
+
+@inject IJSRuntime IJS
+<h3>DO management page</h3>
+<div class="row">
+    <div class="col-md-12">
+        <span style="font-size: 11px; font-family: Tahoma">- Quản lý, hiệu chỉnh, in phiếu DO.<br /></span>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <DxFormLayout>
+            <DxFormLayoutGroup Caption="Lọc theo ngày tháng">
+                <DxFormLayoutItem Caption="Ngày bắt đầu: " ColSpanMd="5">
+                    <Template>
+                        <DxDateEdit @bind-Date="@StartDay" NullText="Select itme ..." />
+                    </Template>
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Ngày kết thúc: " ColSpanMd="5">
+                    <Template>
+                        <DxDateEdit @bind-Date="@EndDay" NullText="Select itme ..." />
+                    </Template>
+                </DxFormLayoutItem>
+                <DxFormLayoutItem ColSpanMd="2">
+                    <Template>
+                        <DxButton Text="Tìm kiếm" />
+                    </Template>
+                </DxFormLayoutItem>
+            </DxFormLayoutGroup>
+        </DxFormLayout>
+    </div>
+</div>
+<h4>Thông tin DO management</h4>
+<div class="row">
+    <div class="col-md-12">
+        @if (p_arr_DO == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <DxDataGrid Data="p_arr_DO" @ref="_Grid_DO"
+                        CssClass="myGrid"
+                        EditMode="DataGridEditMode.PopupEditForm"
+                        RowRemoving="@OnRowDeleting_DO"
+                        RowInsertStart="@(() => OnRowStarting_DO(null))"
+                        RowEditStart="@((item) => OnRowStarting_DO(item))">
+                <Columns>
+                    <DxDataGridCommandColumn Width="150px" />
+                    <DxDataGridColumn Caption="MSHT" Field="Auto_ID" />
+                    <DxDataGridComboBoxColumn Caption="Số phiếu Nhận" Field="Nhan_Hang_ID" Data="p_arr_Nhan_Hang"
+                                              ValueFieldName="Auto_ID" TextFieldName="So_Phieu_Nhan" />
+                    <DxDataGridComboBoxColumn Caption="Số phiếu Giao" Field="Giao_Hang_ID" Data="p_arr_Giao_Hang"
+                                              ValueFieldName="Auto_ID" TextFieldName="So_Phieu_Giao" />
+                    <DxDataGridDateEditColumn Caption="Ngày giao hàng" Field="Ngay_Giao_Hang" />
+                    <DxDataGridColumn Caption="Trip ID" Field="Trip_ID" />
+                    <DxDataGridColumn Caption="Trạng thái" Field="Trang_Thai_ID" />
+                    <DxDataGridColumn Caption="Last Updated By" Field="Last_Updated_By"/>
+                </Columns>
+                <EditFormTemplate>
+                    <EditForm Model="p_objItem_DO" Context="EditFormContext" OnValidSubmit="HandleValiSubmit_DO">
+                        <DxFormLayout>
+                            <DxFormLayoutItem Caption="Số phiếu nhận" Context="FormLayoutContext" ColSpanMd="12">
+                                <Template>
+                                    <DxComboBox @bind-Value="p_objItem_DO.Nhan_Hang_ID" Data="p_arr_Nhan_Hang"
+                                                ValueFieldName="Auto_ID" TextFieldName="So_Phieu_Nhan" />
+                                </Template>
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="Số phiếu giao" Context="FormLayoutContext" ColSpanMd="12">
+                                <Template>
+                                    <DxComboBox @bind-Value="p_objItem_DO.Giao_Hang_ID" Data="p_arr_Giao_Hang"
+                                                ValueFieldName="Auto_ID" TextFieldName="So_Phieu_Giao" />
+                                </Template>
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Context="FormLayoutContext" ColSpanMd="12">
+                                <Template>
+                                    <DxDataGrid Data="p_arr_DO_Chi_Tiet" @ref="_Grid_DO_Chi_Tiet"
+                                                RowRemoving="@OnRowDeleting_DO_Chi_Tiet"
+                                                RowInsertStart="@(() => OnRowStarting_DO_Chi_Tiet(null))"
+                                                RowEditStart="@((item) => OnRowStarting_DO_Chi_Tiet(item))">
+                                        <Columns>
+                                            <DxDataGridCommandColumn Width="150px" />
+                                            <DxDataGridComboBoxColumn Caption="Sản phẩm" Field="San_Pham_ID" Data="p_arr_San_Pham"
+                                                                      ValueFieldName="Auto_ID" TextFieldName="Ten_San_Pham" />
+                                            <DxDataGridSpinEditColumn Caption="Số lượng" Field="So_Luong" />
+                                            <DxDataGridSpinEditColumn Caption="GW" Field="GW" />
+                                            <DxDataGridSpinEditColumn Caption="CBM" Field="CBM" />
+                                            <DxDataGridColumn Caption="Last Updated By" Field="Last_Updated_By" />
+                                        </Columns>
+                                        <EditFormTemplate Context="chilEditFormTemplate">
+                                            <EditForm Model="p_objItem_DO_Chi_Tiet" Context="chilEditFormContext" OnValidSubmit="HandleValiSubmit_DO_Chi_Tiet">
+                                                <DxFormLayout>
+                                                    <DxFormLayoutItem Caption="Sản phẩm: " Context="chilFormLayoutContext" ColSpanMd="12">
+                                                        <Template>
+                                                            <DxComboBox @bind-Value="p_objItem_DO_Chi_Tiet.San_Pham_ID" Data="p_arr_San_Pham"
+                                                                        ValueFieldName="Auto_ID" TextFieldName="Ten_San_Pham" />
+                                                        </Template>
+                                                    </DxFormLayoutItem>
+                                                    <DxFormLayoutItem Caption="Số lượng: " Context="chilFormLayoutContext" ColSpanMd="12">
+                                                        <Template>
+                                                            <DxSpinEdit @bind-Value="p_objItem_DO_Chi_Tiet.So_Luong" />
+                                                        </Template>
+                                                    </DxFormLayoutItem>
+                                                    <DxFormLayoutItem Caption="GW: " Context="chilFormLayoutContext" ColSpanMd="12">
+                                                        <Template>
+                                                            <DxSpinEdit @bind-Value="p_objItem_DO_Chi_Tiet.GW" />
+                                                        </Template>
+                                                    </DxFormLayoutItem>
+                                                    <DxFormLayoutItem Caption="CBM: " Context="chilFormLayoutContext" ColSpanMd="12">
+                                                        <Template>
+                                                            <DxSpinEdit @bind-Value="p_objItem_DO_Chi_Tiet.CBM" />
+                                                        </Template>
+                                                    </DxFormLayoutItem>
+                                                    <DxFormLayoutItem Context="chilFormLayoutContext" ColSpanMd="12">
+                                                        <Template>
+                                                            <div class="text-danger">
+                                                                <p>@Error_DO_Chi_Tiet</p>
+                                                            </div>
+                                                        </Template>
+                                                    </DxFormLayoutItem>
+                                                    <DxFormLayoutItem Context="chilFormLayoutContext" ColSpanMd="12">
+                                                        <Template>
+                                                            <div class="text-right">
+                                                                <DxButton RenderStyle="ButtonRenderStyle.Link" SubmitFormOnClick="true" Text="Update" />
+                                                                <DxButton RenderStyle="ButtonRenderStyle.Link" Click="OnCancelButtonClick_DO_Chi_Tiet" Text="Cancel" />
+                                                            </div>
+                                                        </Template>
+                                                    </DxFormLayoutItem>
+                                                </DxFormLayout>
+                                            </EditForm>
+                                        </EditFormTemplate>
+                                    </DxDataGrid>
+                                </Template>
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Context="FormLayoutContext" ColSpanMd="12">
+                                <Template>
+                                    <div class="text-danger">
+                                        <p>@Error_DO</p>
+                                    </div>
+                                </Template>
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Context="FormLayoutContext" ColSpanMd="12">
+                                <Template>
+                                    <div class="text-right">
+                                        <DxButton RenderStyle="ButtonRenderStyle.Link" SubmitFormOnClick="true" Text="Update" />
+                                        <DxButton RenderStyle="ButtonRenderStyle.Link" Click="OnCancelButtonClick_DO" Text="Cancel" />
+                                    </div>
+                                </Template>
+                            </DxFormLayoutItem>
+                        </DxFormLayout>
+                    </EditForm>
+                </EditFormTemplate>
+            </DxDataGrid>
+        }
+    </div>
+</div>

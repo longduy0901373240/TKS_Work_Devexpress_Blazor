@@ -1,0 +1,49 @@
+﻿@page "/danh_muc/don_vi_tinh"
+
+@using Controller.Danh_Muc
+@using Entity.Danh_Muc
+
+@inject CDM_Don_Vi_Tinh_Controller _db
+<h1> Đơn vị tính page </h1>
+<h4>Thông tin đơn vị tính</h4>
+@if (p_objData is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th> Auto ID</th>
+                <th> Tên đơn vị tính</th>
+                <th> Deleted</th>
+                <th> Created</th>
+                <th> Created By</th>
+                <th> Last Updated</th>
+                <th> Last Updated By</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p_objItem in p_objData)
+            {
+                <tr>
+                    <td>@p_objItem.Auto_ID</td>
+                    <td>@p_objItem.Ten_Don_Vi_Tinh</td>
+                    <td>@p_objItem.deleted</td>
+                    <td>@p_objItem.Created</td>
+                    <td>@p_objItem.Created_By</td>
+                    <td>@p_objItem.Last_Updated</td>
+                    <td>@p_objItem.Last_Updated_By</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private IList<CDM_Don_Vi_Tinh> p_objData;
+    protected override async Task OnInitializedAsync()
+    {
+        p_objData = await _db.List_DM_Don_Vi_Tinh();
+    }
+}

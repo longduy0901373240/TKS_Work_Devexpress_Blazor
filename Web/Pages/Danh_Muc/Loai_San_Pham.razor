@@ -1,0 +1,58 @@
+﻿@page "/danh_muc/loai_san_pham"
+
+@using Controller.Danh_Muc
+
+@inject IJSRuntime JS;
+@inject CDM_Loai_San_Pham_Controller _db;
+
+<h1> Loại sản phẩm page </h1>
+<h4>Thông tin loại sản phẩm</h4>
+@if (p_objData == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <DxDataGrid Data="@p_objData" @ref="@_Grid"
+                RowRemoving="@OnRowDeleting"
+                RowEditStart="@((dataItem) => OnRowStarting(dataItem))"
+                RowInsertStart="@(() => OnRowStarting(null))"
+                EditMode="DataGridEditMode.PopupEditForm">
+        <Columns>
+            <DxDataGridCommandColumn Width="150px" />
+            <DxDataGridColumn Caption="ID" Field="Auto_ID" EditorVisible="false" />
+            <DxDataGridColumn Caption="Tên Loại Sản Phẩm" Field="Ten_Loai_San_Pham" />
+            <DxDataGridColumn Caption="Deleted" Field="deleted" EditorVisible="false" />
+            <DxDataGridDateEditColumn Caption="Created" Field="Created" EditorVisible="false" />
+            <DxDataGridColumn Caption="Created By" Field="Created_By" EditorVisible="false" />
+            <DxDataGridDateEditColumn Caption="Last Update" Field="Last_Updated" EditorVisible="false" />
+            <DxDataGridColumn Caption="Last Update By" Field="Last_Updated_By" EditorVisible="false" />
+        </Columns>
+        <EditFormTemplate>
+            <EditForm Model="@EditContext" Context="EditFormContext" OnValidSubmit="@HandleValiSubmit">
+                <DxFormLayout>
+                    <DxFormLayoutItem Caption="Tên loại sản phẩm: " ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxTextBox @bind-Text="@EditContext.Ten_Loai_San_Pham" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <div class="text-danger">
+                                <p>@Error</p>
+                            </div>
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <div class="text-right">
+                                <DxButton RenderStyle="ButtonRenderStyle.Link" SubmitFormOnClick="true" Text="Update" />
+                                <DxButton RenderStyle="ButtonRenderStyle.Link" Click="OnCancelButtonClick" Text="Cancel" />
+                            </div>
+                        </Template>
+                    </DxFormLayoutItem>
+                </DxFormLayout>
+            </EditForm>
+        </EditFormTemplate>
+    </DxDataGrid>
+}

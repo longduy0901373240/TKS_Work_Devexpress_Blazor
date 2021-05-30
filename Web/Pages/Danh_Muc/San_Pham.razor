@@ -1,0 +1,95 @@
+﻿@page "/danh_muc/san_pham"
+
+@using Controller.Danh_Muc
+
+@inject IJSRuntime JS;
+@inject CDM_San_Pham_Controller _db;
+@inject CDM_Don_Vi_Tinh_Controller _db_Don_Vi_Tinh;
+@inject CDM_Loai_San_Pham_Controller _db_Loai_San_Pham;
+
+<h1> Sản phẩm page </h1>
+<h4>Thông tin sản phẩm</h4>
+@if (p_objData == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <DxDataGrid Data="@p_objData" @ref="@_Grid"
+                RowRemoving="@OnRowDeleting"
+                RowEditStart="@((dataItem) => OnRowStarting(dataItem))"
+                RowInsertStart="@(() => OnRowStarting(null))"
+                EditMode="DataGridEditMode.PopupEditForm">
+        <Columns>
+            <DxDataGridCommandColumn Width="150px" />
+            <DxDataGridColumn Caption="ID" Field="Auto_ID" EditorVisible="false" />
+            <DxDataGridColumn Caption="Mã sản phẩm" Field="Ma_San_Pham" />
+            <DxDataGridColumn Caption="Tên sản phẩm" Field="Ten_San_Pham" />
+            <DxDataGridComboBoxColumn Field="Don_Vi_Tinh_ID" Data="@p_objData_Don_Vi_Tinh" Caption="Đơn vị tính"
+                                      ValueFieldName="Auto_ID" TextFieldName="Ten_Don_Vi_Tinh" />
+            <DxDataGridComboBoxColumn Field="Loai_San_Pham_ID" Data="@p_objData_Loai_San_Pham" Caption="Loại sản phẩm"
+                                      ValueFieldName="Auto_ID" TextFieldName="Ten_Loai_San_Pham" />
+            <DxDataGridColumn Caption="Ghi chú" Field="Ghi_Chu" />
+            <DxDataGridColumn Caption="Deleted" Field="deleted" EditorVisible="false" />
+            <DxDataGridDateEditColumn Caption="Created" Field="Created" EditorVisible="false" />
+            <DxDataGridColumn Caption="Created By" Field="Created_By" EditorVisible="false" />
+            <DxDataGridDateEditColumn Caption="Last Update" Field="Last_Updated" EditorVisible="false" />
+            <DxDataGridColumn Caption="Last Update By" Field="Last_Updated_By" EditorVisible="false" />
+        </Columns>
+        <EditFormTemplate>
+            <EditForm Model="@EditContext" Context="EditFormContext" OnValidSubmit="@HandleValiSubmit">
+                <DxFormLayout>
+                    <DxFormLayoutItem Caption="Mã sản phẩm: " ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxTextBox @bind-Text="@EditContext.Ma_San_Pham" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Tên sản phẩm: " ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxTextBox @bind-Text="@EditContext.Ten_San_Pham" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Đơn vị tính: " ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxComboBox Data="@p_objData_Don_Vi_Tinh"
+                                        ValueFieldName="Auto_ID"
+                                        TextFieldName="Ten_Don_Vi_Tinh"
+                                        NullText="Select item ..."
+                                        @bind-Value="EditContext.Don_Vi_Tinh_ID" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Loại sản phẩm: " ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxComboBox Data="@p_objData_Loai_San_Pham"
+                                        ValueFieldName="Auto_ID"
+                                        TextFieldName="Ten_Loai_San_Pham"
+                                        NullText="Select item ..."
+                                        @bind-Value="EditContext.Loai_San_Pham_ID" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Ghi chú: " ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxMemo @bind-Text="@EditContext.Ghi_Chu" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <div class="text-danger">
+                                <p>@Error</p>
+                            </div>
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <div class="text-right">
+                                <DxButton RenderStyle="ButtonRenderStyle.Link" SubmitFormOnClick="true" Text="Update" />
+                                <DxButton RenderStyle="ButtonRenderStyle.Link" Click="OnCancelButtonClick" Text="Cancel" />
+                            </div>
+                        </Template>
+                    </DxFormLayoutItem>
+                </DxFormLayout>
+            </EditForm>
+        </EditFormTemplate>
+    </DxDataGrid>
+}
+

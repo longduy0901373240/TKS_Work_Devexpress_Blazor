@@ -1,0 +1,208 @@
+﻿@page "/xnk/nhap_kho_management"
+
+@using Controller.XNK
+@using Controller.Danh_Muc
+@using Web.Customize_Devexpress
+
+@inject CXNK_Nhap_Kho_Controller _db_Nhap_Kho
+@inject CXNK_Nhap_Kho_Chi_Tiet_Controller _db_Nhap_Kho_Chi_Tiet
+@inject CDM_Kho_Controller _db_Kho
+@inject CDM_Nha_Cung_Cap_Controller _db_Nha_Cung_Cap
+@inject CDM_San_Pham_Controller _db_San_Pham
+
+@inject IJSRuntime IJS
+@inject IWebHostEnvironment env 
+
+<h3>Nhập kho management page</h3>
+<div class="row">
+    <div class="col-md-12">
+        <span style="font-size: 11px; font-family: Tahoma">- Quản lý, hiệu chỉnh, in phiếu nhập kho.<br /></span>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <DxFormLayout>
+            <DxFormLayoutGroup Caption="Lọc theo ngày tháng">
+                <DxFormLayoutItem Caption="Ngày bắt đầu: " ColSpanMd="5">
+                    <Template>
+                        <DxDateEdit @bind-Date="@StartDay" NullText="Select itme ..." />
+                    </Template>
+                </DxFormLayoutItem>
+                <DxFormLayoutItem Caption="Ngày kết thúc: " ColSpanMd="5">
+                    <Template>
+                        <DxDateEdit @bind-Date="@EndDay" NullText="Select itme ..." />
+                    </Template>
+                </DxFormLayoutItem>
+                <DxFormLayoutItem ColSpanMd="2">
+                    <Template>
+                        <DxButton Text="Tìm kiếm" />
+                    </Template>
+                </DxFormLayoutItem>
+            </DxFormLayoutGroup>
+        </DxFormLayout>
+    </div>
+</div>
+<h4>Thông tin nhập kho management</h4>
+<div class="row">
+    <div class="col-md-12">
+        @if (p_objData_Nhap_Kho == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <EDataGrid Data="p_objData_Nhap_Kho" @ref="_Grid_Nhap_Kho"
+                       CssClass="myGrid"
+                       EditMode="DataGridEditMode.PopupEditForm"
+                       RowRemoving="@OnRowDeleting_Nhap_Kho"
+                       RowInsertStart="@(() => OnRowStarting_Nhap_Kho(null))"
+                       RowEditStart="@((Item) => OnRowStarting_Nhap_Kho(Item))">
+                <Columns>
+                    <DxDataGridCommandColumn Width="150px" />
+                    <DxDataGridColumn Caption="MSHT" Field="Auto_ID" />
+                    <DxDataGridColumn Caption="Số phiếu nhập" Field="So_Phieu_Nhap" />
+                    <DxDataGridDateEditColumn Caption="Ngày nhập" Field="Ngay_Nhap_Kho" />
+                    <DxDataGridComboBoxColumn Caption="Nhà cung cấp" Field="Nha_Cung_Cap_ID" Data="p_objData_Nha_Cung_Cap"
+                                              ValueFieldName="Auto_ID" TextFieldName="Ten_Nha_Cung_Cap" />
+                    <DxDataGridComboBoxColumn Caption="Kho" Field="Kho_ID" Data="p_objData_Kho"
+                                              ValueFieldName="Auto_ID" TextFieldName="Ten_Kho" />
+                    <DxDataGridSpinEditColumn Caption="Tổng số lượng" Field="Tong_So_Luong" />
+                    <DxDataGridSpinEditColumn Caption="Trị giá" Field="Tong_Tri_Gia" />
+                </Columns>
+                @* --------------------------------------------------EDIT FORM TEMPLATE NHẬP KHO----------------------------------------------------------------------- *@
+                <EditFormTemplate>
+                    <EditForm Model="p_objItem_Nhap_Kho" Context="EditFormContext" OnValidSubmit="HandleValiSubmit_Nhap_Kho">
+                        <DxFormLayout>
+                            <DxFormLayoutItem Caption="Số phiếu nhập" Context="FormLayoutContext" ColSpanMd="12">
+                                <Template>
+                                    <DxTextBox @bind-Text="p_objItem_Nhap_Kho.So_Phieu_Nhap" />
+                                </Template>
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="Ngày nhập" Context="FormLayoutContext" ColSpanMd="12">
+                                <Template>
+                                    <DxDateEdit @bind-Date="p_objItem_Nhap_Kho.Ngay_Nhap_Kho" />
+                                </Template>
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="Nhà cung cấp" Context="FormLayoutContext" ColSpanMd="12">
+                                <Template>
+                                    <DxComboBox @bind-Value="p_objItem_Nhap_Kho.Nha_Cung_Cap_ID" Data="p_objData_Nha_Cung_Cap"
+                                                ValueFieldName="Auto_ID" TextFieldName="Ten_Nha_Cung_Cap" />
+                                </Template>
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="Kho" Context="FormLayoutContext" ColSpanMd="12">
+                                <Template>
+                                    <DxComboBox @bind-Value="p_objItem_Nhap_Kho.Kho_ID" Data="p_objData_Kho"
+                                                ValueFieldName="Auto_ID" TextFieldName="Ten_Kho" />
+                                </Template>
+                            </DxFormLayoutItem>
+                            <DxFormLayoutGroup Caption="Import Excel" ColSpanMd="12">
+                                <DxFormLayoutItem Context="FormLayoutImportExcelContext" ColSpanMd="6">
+                                    <Template>
+                                        <InputFile class="btn btn-sm dx-btn  btn-primary" OnChange="OnInputFileChange"/>
+                                    </Template>
+                                </DxFormLayoutItem>
+                                <DxFormLayoutItem Context="FormLayoutImportExcelContext" ColSpanMd="3">
+                                    <Template>
+                                        <DxButton Text="Submit" @onclick="Import_Excel"/>
+                                    </Template>
+                                </DxFormLayoutItem>
+                                <DxFormLayoutItem Context="FormLayoutImportExcelContext" ColSpanMd="3">
+                                    <Template>
+                                        <a href="/FileManagement/Template/Nhap_Kho_Template.xlsx" download="Nhap_Kho_Template.xlsx">
+                                            <DxButton Text="Download Template" />
+                                        </a>
+                                    </Template>
+                                </DxFormLayoutItem>
+                            </DxFormLayoutGroup>
+                            @* --------------------------------------------------EDIT FORM TEMPLATE NHẬP KHO CHI TIẾT----------------------------------------------------------------------- *@
+                            <DxFormLayoutItem Context="FormLayoutContext" ColSpanMd="12">
+                                <Template>
+                                    <DxDataGrid Data="p_objData_Nhap_Kho_Chi_Tiet" @ref="_Grid_Nhap_Kho_Chi_Tiet"
+                                                RowRemoving="@OnRowDeleting_Nhap_Kho_Chi_Tiet"
+                                                RowInsertStart="@(() => OnRowStarting_Nhap_Kho_Chi_Tiet(null))"
+                                                RowEditStart="@((Item) => OnRowStarting_Nhap_Kho_Chi_Tiet(Item))">
+                                        <Columns>
+                                            <DxDataGridCommandColumn Width="150px" />
+                                            <DxDataGridColumn Caption="MSHT" Field="Auto_ID" />
+                                            <DxDataGridComboBoxColumn Caption="Tên sản phẩm" Field="San_Pham_ID" Data="p_objData_San_Pham"
+                                                                      ValueFieldName="Auto_ID" TextFieldName="Ten_San_Pham" />
+                                            <DxDataGridSpinEditColumn Caption="Số lượng" Field="So_Luong" />
+                                            <DxDataGridSpinEditColumn Caption="Đơn giá" Field="Don_Gia" />
+                                            <DxDataGridColumn Caption="Last Update By" Field="Last_Updated_By" />
+                                        </Columns>
+                                        <EditFormTemplate Context="chilEditFormTemplate">
+                                            <EditForm Model="p_objItem_Nhap_Kho_Chi_Tiet" Context="chilEditFormContext" OnValidSubmit="HandleValiSubmit_Nhap_Kho_Chi_Tiet">
+                                                <DxFormLayout>
+                                                    <DxFormLayoutItem Caption="Sản phẩm" Context="chilFormLayoutContext" ColSpanMd="12">
+                                                        <Template>
+                                                            <DxComboBox @bind-Value="p_objItem_Nhap_Kho_Chi_Tiet.San_Pham_ID" Data="p_objData_San_Pham"
+                                                                        ValueFieldName="Auto_ID" TextFieldName="Ten_San_Pham" />
+                                                        </Template>
+                                                    </DxFormLayoutItem>
+                                                    <DxFormLayoutItem Caption="Số lượng" Context="chilFormLayoutContext" ColSpanMd="6">
+                                                        <Template>
+                                                            <DxSpinEdit @bind-Value="p_objItem_Nhap_Kho_Chi_Tiet.So_Luong" />
+                                                        </Template>
+                                                    </DxFormLayoutItem>
+                                                    <DxFormLayoutItem Caption="Đơn giá" Context="chilFormLayoutContext" ColSpanMd="6">
+                                                        <Template>
+                                                            <DxSpinEdit @bind-Value="p_objItem_Nhap_Kho_Chi_Tiet.Don_Gia" />
+                                                        </Template>
+                                                    </DxFormLayoutItem>
+                                                    <DxFormLayoutItem Context="chilFormLayoutContext" ColSpanMd="12">
+                                                        <Template>
+                                                            <div class="text-danger">
+                                                                <p>@Error_Nhap_Kho_Chi_Tiet</p>
+                                                            </div>
+                                                        </Template>
+                                                    </DxFormLayoutItem>
+                                                    <DxFormLayoutItem Context="chilFormLayoutContext" ColSpanMd="12">
+                                                        <Template>
+                                                            <div class="text-right">
+                                                                <DxButton RenderStyle="ButtonRenderStyle.Link" SubmitFormOnClick="true" Text="Update" />
+                                                                <DxButton RenderStyle="ButtonRenderStyle.Link" Click="OnCancelButtonClick_Nhap_Kho_Chi_Tiet" Text="Cancel" />
+                                                            </div>
+                                                        </Template>
+                                                    </DxFormLayoutItem>
+                                                </DxFormLayout>
+                                            </EditForm>
+                                        </EditFormTemplate>
+                                    </DxDataGrid>
+                                </Template>
+                            </DxFormLayoutItem>
+                            @* --------------------------------------------------EDIT FORM TEMPLATE NHẬP KHO CHI TIẾT----------------------------------------------------------------------- *@
+                            <DxFormLayoutItem Context="FormLayoutContext" ColSpanMd="12">
+                                <Template>
+                                    <div class="text-danger">
+                                        <p>@Error_Nhap_Kho</p>
+                                    </div>
+                                </Template>
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Context="FormLayoutContext" ColSpanMd="12">
+                                <Template>
+                                    <div class="text-right">
+                                        <DxButton RenderStyle="ButtonRenderStyle.Link" SubmitFormOnClick="true" Text="Update" />
+                                        <DxButton RenderStyle="ButtonRenderStyle.Link" Click="OnCancelButtonClick_Nhap_Kho" Text="Cancel" />
+                                    </div>
+                                </Template>
+                            </DxFormLayoutItem>
+                        </DxFormLayout>
+                    </EditForm>
+                </EditFormTemplate>
+                @* --------------------------------------------------EDIT FORM TEMPLATE NHẬP KHO----------------------------------------------------------------------- *@
+            </EDataGrid>
+            <DxButton Text="XLSX" Click="@(async(e)=> { await _Grid_Nhap_Kho.Export("xlsx"); })"></DxButton>
+            <DxButton Text="PDF" Click="@(async(e)=> { await _Grid_Nhap_Kho.Export("pdf"); })"></DxButton>
+            <DxButton Text="DOCX" Click="@(async(e)=> { await _Grid_Nhap_Kho.Export("docx"); })"></DxButton>
+            <DxButton Text="CSV" Click="@(async(e)=> { await _Grid_Nhap_Kho.Export("csv"); })"></DxButton>
+            
+        }
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <DxButton Text="Export Excel" @onclick="ExportExcel"></DxButton>
+    </div>
+</div>

@@ -1,0 +1,76 @@
+﻿@page "/danh_muc/drill_down"
+
+@using Controller.Danh_Muc
+
+@inject IJSRuntime JS;
+@inject CDM_Drill_Down_Controller _db;
+
+<h1> Drill down page </h1>
+<h4>Thông tin drill down</h4>
+@if (p_objData == null)
+{
+    <p><em>Loading....</em></p>
+}
+else
+{
+    <DxDataGrid Data="p_objData" @ref="@_Grid"
+                RowRemoving="@OnRowDeleting"
+                RowEditStart="@((dataItem) => OnRowStarting(dataItem))"
+                RowInsertStart="@(() => OnRowStarting(null))"
+                EditMode="DataGridEditMode.PopupEditForm">
+        <Columns>
+            <DxDataGridCommandColumn Width="150px" />
+            <DxDataGridColumn Caption="ID" Field="Auto_ID" EditorVisible="false" Visible="false" />
+            <DxDataGridColumn Caption="Field Name" Field="Field_Name" EditorVisible="true" />
+            <DxDataGridColumn Caption="Link Url" Field="Link_URL" EditorVisible="true" />
+            <DxDataGridColumn Caption="Parameter Field" Field="Parameter_Field" EditorVisible="true" />
+            <DxDataGridColumn Caption="Function ID" Field="Func_ID" EditorVisible="true" />
+            <DxDataGridColumn Caption="Deleted" Field="deleted" EditorVisible="false" />
+            <DxDataGridDateEditColumn Caption="Created" Field="Created" EditorVisible="false" />
+            <DxDataGridColumn Caption="Created By" Field="Created_By" EditorVisible="false" />
+            <DxDataGridDateEditColumn Caption="Last Update" Field="Last_Updated" EditorVisible="false" />
+            <DxDataGridColumn Caption="Last Update By" Field="Last_Updated_By" EditorVisible="false" />
+        </Columns>
+        <EditFormTemplate>
+            <EditForm Model="@EditContext" Context="EditFormContext" OnValidSubmit="@HandleValiSubmit">
+                <DxFormLayout>
+                    <DxFormLayoutItem Caption="Field Name" ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxTextBox @bind-Text="@EditContext.Field_Name" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Link Url" ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxTextBox @bind-Text="@EditContext.Link_URL" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Parameter Field" ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxTextBox @bind-Text="@EditContext.Parameter_Field" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Function ID" ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <DxTextBox @bind-Text="@EditContext.Func_ID" />
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <div class="text-danger">
+                                <p>@Error</p>
+                            </div>
+                        </Template>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem ColSpanMd="12" Context="FormLayoutContext">
+                        <Template>
+                            <div class="text-right">
+                                <DxButton RenderStyle="ButtonRenderStyle.Link" SubmitFormOnClick="true" Text="Update" />
+                                <DxButton RenderStyle="ButtonRenderStyle.Link" Click="OnCancelButtonClick" Text="Cancel" />
+                            </div>
+                        </Template>
+                    </DxFormLayoutItem>
+                </DxFormLayout>
+            </EditForm>
+        </EditFormTemplate>
+    </DxDataGrid>
+}
