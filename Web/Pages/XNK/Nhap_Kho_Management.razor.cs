@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Data;
 using Utility;
 using Web.Customize_Devexpress;
+using OfficeOpenXml;
 
 namespace Web.Pages.XNK
 {
@@ -239,12 +240,12 @@ namespace Web.Pages.XNK
         private void Import_Excel()
         {
             CExcel_Controller v_objexcel = new CExcel_Controller();
-            FileInfo v_fileInfo = v_objexcel.Get_File(p_strPath);
-            string v_intCell_From = v_objexcel.Cell_From(v_fileInfo);
-            string v_intCell_End = v_objexcel.Cell_End(v_fileInfo);
-            DataTable v_dt = v_objexcel.List_Range_Value_To_End(v_intCell_From, v_intCell_End, v_fileInfo);
-            string test = v_dt.Columns[0].ToString();
-            foreach (DataRow v_row in v_dt.Rows)
+            //lọc từ vùng chọn đến hết
+            DataTable v_dt_List_Range_Value_To_End = v_objexcel.List_Range_Value_To_End("A1", "C", p_strPath);
+            // lọc theo vùng mình chọn
+            DataTable v_dt_List_Range_Value = v_objexcel.List_Range_Value("A3", "C4", p_strPath);
+            string test = v_dt_List_Range_Value_To_End.Columns[0].ToString();
+            foreach (DataRow v_row in v_dt_List_Range_Value_To_End.Rows)
             {
                 CXNK_Nhap_Kho_Chi_Tiet v_objItem = new CXNK_Nhap_Kho_Chi_Tiet();
                 v_objItem.San_Pham_ID = CUtility.Convert_To_Int32(v_row[0]);
@@ -253,6 +254,7 @@ namespace Web.Pages.XNK
                 Add_To_NKCT(p_objData_Nhap_Kho_Chi_Tiet, v_objItem);
             }
             p_strPath = "";
+            IJS.InvokeVoidAsync("Clear_InputFile");
             InvokeAsync(StateHasChanged);
             _Grid_Nhap_Kho_Chi_Tiet.Refresh();
         }
@@ -271,12 +273,21 @@ namespace Web.Pages.XNK
         {
             CExcel_Controller v_objexcel = new CExcel_Controller();
             byte[] v_fileContents;
-            Dictionary<int, string[]> p_dicTest = new Dictionary<int, string[]>();
-            p_dicTest.Add(1, new string[]{"Auto ID","Auto_ID"});
-            p_dicTest.Add(2, new string[]{ "Số Phiếu Nhập", "So_Phieu_Nhap" });
-            p_dicTest.Add(3, new string[]{ "Ngày Nhập Kho", "Ngay_Nhap_Kho" });
-            v_fileContents = v_objexcel.Export_Excel<CXNK_Nhap_Kho>("B2", p_objData_Nhap_Kho, p_dicTest);
-            IJS.InvokeAsync<CXNK_Nhap_Kho>(
+            //chọn vùng và màu cho background
+            Dictionary<int, string[]> v_dicBkd_Color = new Dictionary<int, string[]>();
+            v_dicBkd_Color.Add(1, new string[] { "A3", "C3", "#B7DEE8" });
+            //chọn vùng muốn in đậm chữ
+            Dictionary<int, string[]> v_dicBold_Text = new Dictionary<int, string[]>();
+            v_dicBold_Text.Add(1,new string[] { "A1","C2"});
+            Dictionary<int, string[]> v_dicHeader_Field_Nhap_Kho = new Dictionary<int, string[]>();
+            v_dicHeader_Field_Nhap_Kho.Add(1, new string[] { "Auto ID", "Auto_ID" });
+            v_dicHeader_Field_Nhap_Kho.Add(2, new string[] { "Số Phiếu Nhập", "So_Phieu_Nhap" });
+            v_dicHeader_Field_Nhap_Kho.Add(3, new string[] { "Ngày Nhập Kho", "Ngay_Nhap_Kho" });
+            //Export thêm màu và tô đậm
+            v_fileContents = v_objexcel.Export_Excel<CXNK_Nhap_Kho>("A1", p_objData_Nhap_Kho, v_dicHeader_Field_Nhap_Kho, v_dicBold_Text, v_dicBkd_Color);
+            //Export mặc định
+            //v_fileContents = v_objexcel.Export_Excel<CXNK_Nhap_Kho>("A1", p_objData_Nhap_Kho, v_dicHeader_Field_Nhap_Kho, null, null);
+            IJS.InvokeVoidAsync(
                 "saveAsFile",
                 "test.xlsx",
                 Convert.ToBase64String(v_fileContents)

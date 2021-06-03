@@ -57,3 +57,6 @@ function downloadFile(b64Data, contentType, fileName) {
         }
     }
 }
+function Clear_InputFile() {
+    document.getElementById('InputFile_Custom').value = null;
+}
