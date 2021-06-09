@@ -4985,11 +4985,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Web_Blazor\\Web_Blazor.csproj",
+      "projectUniqueName": "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\Web_Blazor\\Web_Blazor.csproj",
       "projectName": "Web_Blazor",
-      "projectPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Web_Blazor\\Web_Blazor.csproj",
+      "projectPath": "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\Web_Blazor\\Web_Blazor.csproj",
       "packagesPath": "C:\\Users\\longd\\.nuget\\packages\\",
-      "outputPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Web_Blazor\\obj\\",
+      "outputPath": "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\Web_Blazor\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages"
@@ -5011,17 +5011,17 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "D:\\Work\\TKS_Work_Devexpress_Blazor\\Controller\\Controller.csproj": {
-              "projectPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Controller\\Controller.csproj"
+            "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\Controller\\Controller.csproj": {
+              "projectPath": "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\Controller\\Controller.csproj"
             },
-            "D:\\Work\\TKS_Work_Devexpress_Blazor\\DataLayer\\DataLayer.csproj": {
-              "projectPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\DataLayer\\DataLayer.csproj"
+            "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\DataLayer\\DataLayer.csproj": {
+              "projectPath": "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\DataLayer\\DataLayer.csproj"
             },
-            "D:\\Work\\TKS_Work_Devexpress_Blazor\\Entity\\Entity.csproj": {
-              "projectPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Entity\\Entity.csproj"
+            "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\Entity\\Entity.csproj": {
+              "projectPath": "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\Entity\\Entity.csproj"
             },
-            "D:\\Work\\TKS_Work_Devexpress_Blazor\\Utility\\Utility.csproj": {
-              "projectPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Utility\\Utility.csproj"
+            "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\Utility\\Utility.csproj": {
+              "projectPath": "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\Utility\\Utility.csproj"
             }
           }
         }

@@ -4926,11 +4926,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Work\\TKS_Work_Devexpress_Blazor\\DataLayer\\DataLayer.csproj",
+      "projectUniqueName": "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\DataLayer\\DataLayer.csproj",
       "projectName": "DataLayer",
-      "projectPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\DataLayer\\DataLayer.csproj",
+      "projectPath": "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\DataLayer\\DataLayer.csproj",
       "packagesPath": "C:\\Users\\longd\\.nuget\\packages\\",
-      "outputPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\DataLayer\\obj\\",
+      "outputPath": "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\DataLayer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\DevExpress 20.2\\Components\\Offline Packages"
@@ -4952,8 +4952,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "D:\\Work\\TKS_Work_Devexpress_Blazor\\Utility\\Utility.csproj": {
-              "projectPath": "D:\\Work\\TKS_Work_Devexpress_Blazor\\Utility\\Utility.csproj"
+            "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\Utility\\Utility.csproj": {
+              "projectPath": "D:\\Work\\Repositories\\TKS_Work_Devexpress_Blazor\\Utility\\Utility.csproj"
             }
           }
         }

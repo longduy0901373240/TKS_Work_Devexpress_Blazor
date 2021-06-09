@@ -120,9 +120,9 @@ namespace Utility
                     var row = v_excelWorksheet.Cells[i, v_intColumnStart, i, v_intColumnEnd];
                     DataRow v_Row = v_dt.NewRow();
                     int v_intColumn = 0;
-                    foreach (var cell in row)
+                    for (int j = v_intColumnStart; j <= v_intColumnEnd; j++)
                     {
-                        v_Row[v_intColumn] = cell.Text;
+                        v_Row[v_intColumn] = row[i, j].Value;
                         v_intColumn++;
                     }
                     v_dt.Rows.Add(v_Row);
@@ -211,9 +211,9 @@ namespace Utility
                     var row = v_excelWorksheet.Cells[i, v_intColumnStart, i, v_intColumnEnd];
                     DataRow v_Row = v_dt.NewRow();
                     int v_intColumn = 0;
-                    foreach (var cell in row)
+                    for (int j = v_intColumnStart; j <= v_intColumnEnd; j++)
                     {
-                        v_Row[v_intColumn] = cell.Text;
+                        v_Row[v_intColumn] = row[i, j].Value;
                         v_intColumn++;
                     }
                     v_dt.Rows.Add(v_Row);
